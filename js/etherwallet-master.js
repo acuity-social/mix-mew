@@ -1002,29 +1002,29 @@ var tabsCtrl = function($scope, globalService, $sce) {
     }
     $scope.nodeList = {
 	    'etherhub': {
-	        'name': 'Etherhub',
+	        'name': '',
 	        'blockExplorerTX': 'http://etherhub.io/tx/[[txHash]]',
 	        'blockExplorerAddr': 'http://etherhub.io/addr/[[address]]',
-	        'service': 'Etherhub.io',
+	        'service': '',
 	        'SERVERURL': "https://mewapi.epool.io"
-	    },
-	    'gastracker': {
-	        'name': 'Gastracker',
-	        'blockExplorerTX': 'https://gastracker.io/tx/[[txHash]]',
-	        'blockExplorerAddr': 'https://gastracker.io/addr/[[address]]',
-	        'service': 'Gastracker.io',
-	        'SERVERURL': 'https://mewapi.epool.io'
-	    },
-	    'etc_epool': {
-	        'name': 'EPool',
-	        'blockExplorerTX': 'https://gastracker.io/tx/[[txHash]]',
-	        'blockExplorerAddr': 'https://gastracker.io/addr/[[address]]',
-	        'service': 'Epool.io',
-	        'SERVERURL': 'https://mewapi.epool.io'
-	    }
+	    }//,
+	   // 'gastracker': {
+	    //    'name': 'Gastracker',
+	    //    'blockExplorerTX': 'https://gastracker.io/tx/[[txHash]]',
+	    //    'blockExplorerAddr': 'https://gastracker.io/addr/[[address]]',
+	    //    'service': 'Gastracker.io',
+	    //    'SERVERURL': 'https://mewapi.epool.io'
+	   // },
+	  //  'etc_epool': {
+	   //     'name': 'EPool',
+	    //    'blockExplorerTX': 'https://gastracker.io/tx/[[txHash]]',
+	    //    'blockExplorerAddr': 'https://gastracker.io/addr/[[address]]',
+	   //     'service': 'Epool.io',
+	   //     'SERVERURL': 'https://mewapi.epool.io'
+	  //  }
 	}
     $scope.defaultNodeKey = 'etherhub';
-    $scope.nodeIsConnected = true;
+    $scope.nodeIsConnected = false;
     $scope.changeNode = function(key) {
         if ($scope.nodeList[key]) {
             $scope.curNode = $scope.nodeList[key];
@@ -1946,7 +1946,7 @@ globalFuncs.getBlockie = function(address) {
 }
 globalFuncs.printPaperWallets = function(strJson) {
 	var win = window.open("about:blank", "_blank");
-	var data = "<html><head><link rel=\"stylesheet\" href=\"css\/etherwallet-master.min.css\"\/><script type=\"text\/javascript\" src=\"js\/jquery-1.12.3.min.js\"><\/script><script type=\"text\/javascript\" src=\"js\/etherwallet-static.min.js\"><\/script><script type=\"text\/javascript\">function generateWallets(){    var json = JSON.parse($(\"#printwalletjson\").html());    for(var i=0;i<json.length;i++){        var walletTemplate = $(\'<div\/>\').append($(\"#print-container\").clone());        new QRCode($(walletTemplate).find(\"#paperwalletaddqr\")[0], {\t\t  text: json[i][\'address\'],\t\t  colorDark: \"#000000\",\t\t  colorLight: \"#ffffff\",\t\tcorrectLevel: QRCode.CorrectLevel.H\t   });       new QRCode($(walletTemplate).find(\"#paperwalletprivqr\")[0], {\t\t  text: json[i][\'private\'],\t\t  colorDark: \"#000000\",\t\t  colorLight: \"#ffffff\",\t\tcorrectLevel: QRCode.CorrectLevel.H\t   });       $(walletTemplate).find(\"#paperwalletadd\").html(json[i][\'address\']);       $(walletTemplate).find(\"#paperwalletpriv\").html(json[i][\'private\']);       walletTemplate = $(walletTemplate).find(\"#print-container\").show();       $(\"body\").append(walletTemplate);    }    setTimeout(function(){window.print();},2000);}<\/script><\/head><body><span id=\"printwalletjson\" style=\"display: none;\">{{WALLETJSON}}<\/span><div class=\"print-container\" style=\"display: none; margin-bottom: 28px;\" id=\"print-container\">        <img src=\"images\/logo-1.png\" class=\"ether-logo-1\" height=\"100%\" width=\"auto\"\/>        <img src=\"images\/logo-2.png\" class=\"ether-logo-2\"\/>        <img src=\"images\/ether-title.png\" height=\"100%\" width=\"auto\" class=\"print-title\"\/>          <div class=\"print-qr-code-1\">          <div id=\"paperwalletaddqr\"><\/div>            <p class=\"print-text\" style=\"padding-top: 25px;\">YOUR ADDRESS<\/p>          <\/div>          <div class=\"print-qr-code-2\">            <div id=\"paperwalletprivqr\"><\/div>            <p class=\"print-text\" style=\"padding-top: 30px;\">YOUR PRIVATE KEY<\/p>          <\/div>          <div class=\"print-notes\">            <img src=\"images\/notes-bg.png\" width=\"90%;\" height=\"auto\" class=\"pull-left\" \/>            <p class=\"print-text\">AMOUNT \/ NOTES<\/p>          <\/div>        <div class=\"print-address-container\">          <p>            <strong>Your Address:<\/strong><br \/>            <span id=\"paperwalletadd\"><\/span>          <\/p>          <p>            <strong>Your Private Key:<\/strong><br \/>            <span id=\"paperwalletpriv\"><\/span>        <\/p>    <\/div><\/div><\/body><\/html>";
+	var data = "<html><head><link rel=\"stylesheet\" href=\"css\/etherwallet-master.min.css\"\/><script type=\"text\/javascript\" src=\"js\/jquery-1.12.3.min.js\"><\/script><script type=\"text\/javascript\" src=\"js\/etherwallet-static.min.js\"><\/script><script type=\"text\/javascript\">function generateWallets(){    var json = JSON.parse($(\"#printwalletjson\").html());    for(var i=0;i<json.length;i++){        var walletTemplate = $(\'<div\/>\').append($(\"#print-container\").clone());        new QRCode($(walletTemplate).find(\"#paperwalletaddqr\")[0], {\t\t  text: json[i][\'address\'],\t\t  colorDark: \"#000000\",\t\t  colorLight: \"#ffffff\",\t\tcorrectLevel: QRCode.CorrectLevel.H\t   });       new QRCode($(walletTemplate).find(\"#paperwalletprivqr\")[0], {\t\t  text: json[i][\'private\'],\t\t  colorDark: \"#000000\",\t\t  colorLight: \"#ffffff\",\t\tcorrectLevel: QRCode.CorrectLevel.H\t   });       $(walletTemplate).find(\"#paperwalletadd\").html(json[i][\'address\']);       $(walletTemplate).find(\"#paperwalletpriv\").html(json[i][\'private\']);       walletTemplate = $(walletTemplate).find(\"#print-container\").show();       $(\"body\").append(walletTemplate);    }    setTimeout(function(){window.print();},2000);}<\/script><\/head><body><span id=\"printwalletjson\" style=\"display: none;\">{{WALLETJSON}}<\/span><div class=\"print-container\" style=\"display: none; margin-bottom: 28px;\" id=\"print-container\">            <img src=\"images\/link-logo-wallet-1.png\" height=\"100%\" width=\"auto\" class=\"print-title\"\/>          <div class=\"print-qr-code-1\">          <div id=\"paperwalletaddqr\"><\/div>            <p class=\"print-text\" style=\"padding-top: 25px;\">YOUR ADDRESS<\/p>          <\/div>          <div class=\"print-qr-code-2\">            <div id=\"paperwalletprivqr\"><\/div>            <p class=\"print-text\" style=\"padding-top: 30px;\">YOUR PRIVATE KEY<\/p>          <\/div>          <div class=\"print-notes\">            <img src=\"images\/notes-bg.png\" width=\"90%;\" height=\"auto\" class=\"pull-left\" \/>            <p class=\"print-text\">AMOUNT \/ NOTES<\/p>          <\/div>        <div class=\"print-address-container\">          <p>            <strong>Your Address:<\/strong><br \/>            <span id=\"paperwalletadd\"><\/span>          <\/p>          <p>            <strong>Your Private Key:<\/strong><br \/>            <span id=\"paperwalletpriv\"><\/span>        <\/p>    <\/div><\/div><\/body><\/html>";
 	data = data.replace("{{WALLETJSON}}", strJson);
 	win.document.write(data);
 	win.document.write("<script>generateWallets();</script>");
@@ -2503,27 +2503,27 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       name: "My Wallets",
       url: "my-wallet",
       mew: false,
-      cx: true
+      cx: false
     },
     addWallet: {
       id: 4,
       name: "Add Wallet",
       url: "add-wallet",
       mew: false,
-      cx: true
+      cx: false
     },
     sendTransaction: {
       id: 5,
       name: "Send ETC & Tokens",
       url: "send-transaction",
-      mew: true,
-      cx: true
+      mew: false,
+      cx: false
     },
     offlineTransaction: {
       id: 6,
       name: "Offline Transaction",
       url:"offline-transaction",
-      mew: true,
+      mew: false,
       cx: false
     },
     /*
@@ -2552,22 +2552,22 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       id: 7,
       name: "Contracts",
       url:"contracts",
-      mew: true,
+      mew: false,
       cx: false
     },
     help: {
       id: 8,
       name: "Help",
       url: "help",
-      mew: true,
-      cx: true
+      mew: false,
+      cx: false
     },
     ico: {
       id: 9,
       name: "theICO",
       url: "ico",
-      mew: true,
-      cx: true
+      mew: false,
+      cx: false
     }/*
     buyIco: {
       id: 10,
@@ -2578,9 +2578,9 @@ var globalService = function($http, $httpParamSerializerJQLike) {
     }*/
 
   };
-  var currentTab = 5;
+  var currentTab = 0;
   if(typeof chrome != 'undefined')
-    currentTab = chrome.windows === undefined ? 5 : 3;
+    currentTab = chrome.windows === undefined ? 0 : 0;
   return {
     tabs: tabs,
     currentTab: currentTab
