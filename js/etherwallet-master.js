@@ -594,7 +594,7 @@ var quickSendCtrl = function($scope, $sce) {
 				if (!rawTx.isError) {
 					uiFuncs.sendTx(rawTx.signedTx, function (resp) {
 						if (!resp.isError) {
-							$scope.sendTxStatus = $sce.trustAsHtml(globalFuncs.getSuccessText(globalFuncs.successMsgs[2] + "<br />" + resp.data + "<br /><a href='http://etherhub.io/tx/" + resp.data + "' target='_blank'> ETC TX via EtherHub.io </a>"));
+							$scope.sendTxStatus = $sce.trustAsHtml(globalFuncs.getSuccessText(globalFuncs.successMsgs[2] + "<br />" + resp.data + "<br /><a href='http://blocks.link-blockchain.org/tx/" + resp.data + "' target='_blank'> ETC TX via EtherHub.io </a>"));
 							$scope.setBalance();
 						} else {
 							$scope.sendTxStatus = $sce.trustAsHtml(globalFuncs.getDangerText(resp.error));
@@ -958,7 +958,7 @@ var sendTxCtrl = function($scope, $sce, walletService) {
         $scope.sendTxModal.close();
         uiFuncs.sendTx($scope.signedTx, function (resp) {
             if (!resp.isError) {
-                var bExStr = "<a href='http://etherhub.io/tx/" + resp.data + "' target='_blank'> View your transaction </a>";
+                var bExStr = "<a href='http://blocks.link-blockchain.org/tx/" + resp.data + "' target='_blank'> View your transaction </a>";
                 $scope.notifier.success(globalFuncs.successMsgs[2] + resp.data + "<br />" + bExStr);
                 $scope.wallet.setBalance();
             } else {
@@ -1001,12 +1001,12 @@ var tabsCtrl = function($scope, globalService, $sce) {
         	$scope.activeTab = globalService.currentTab;
     }
     $scope.nodeList = {
-	    'etherhub': {
-	        'name': '',
-	        'blockExplorerTX': 'http://etherhub.io/tx/[[txHash]]',
-	        'blockExplorerAddr': 'http://etherhub.io/addr/[[address]]',
-	        'service': '',
-	        'SERVERURL': "https://mewapi.epool.io"
+	    'Default': {
+	        'name': 'Default',
+	        'blockExplorerTX': 'http://blocks.link-blockchain.org/tx/[[txHash]]',
+	        'blockExplorerAddr': 'http://blocks.link-blockchain.org/[[address]]',
+	        'service': 'http://139.162.15.124:8645',
+	        'SERVERURL': 'http://139.162.15.124:8645'
 	    }//,
 	   // 'gastracker': {
 	    //    'name': 'Gastracker',
@@ -1023,7 +1023,7 @@ var tabsCtrl = function($scope, globalService, $sce) {
 	   //     'SERVERURL': 'https://mewapi.epool.io'
 	  //  }
 	}
-    $scope.defaultNodeKey = 'etherhub';
+    $scope.defaultNodeKey = 'Default';
     $scope.nodeIsConnected = false;
     $scope.changeNode = function(key) {
         if ($scope.nodeList[key]) {
@@ -1177,8 +1177,8 @@ var contractsCtrl = function contractsCtrl($scope, $sce, walletService) {
         $scope.sendContractModal.close();
         uiFuncs.sendTx($scope.signedTx, function (resp) {
             if (!resp.isError) {
-                var bExStr = "<a href='http://etherhub.io/tx/" + resp.data + "' target='_blank'> View your transaction </a>";
-                var contractAddr = " & Contract Address <a href='http://etherhub.io/addr/" + $scope.tx.contractAddr + "' target='_blank'>" + $scope.tx.contractAddr + "</a>";
+                var bExStr = "<a href='http://blocks.link-blockchain.org/tx/" + resp.data + "' target='_blank'> View your transaction </a>";
+                var contractAddr = " & Contract Address <a href='http://blocks.link-blockchain.org/addr/" + $scope.tx.contractAddr + "' target='_blank'>" + $scope.tx.contractAddr + "</a>";
                 $scope.notifier.success(globalFuncs.successMsgs[2] + "<br />" + resp.data + "<br />" + bExStr + contractAddr);
             } else {
                 $scope.notifier.danger(resp.error);
@@ -2514,9 +2514,9 @@ var globalService = function($http, $httpParamSerializerJQLike) {
     },
     sendTransaction: {
       id: 5,
-      name: "Send ETC & Tokens",
+      name: "Send Link",
       url: "send-transaction",
-      mew: false,
+      mew: true,
       cx: false
     },
     offlineTransaction: {
