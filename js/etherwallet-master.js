@@ -594,7 +594,7 @@ var quickSendCtrl = function($scope, $sce) {
 				if (!rawTx.isError) {
 					uiFuncs.sendTx(rawTx.signedTx, function (resp) {
 						if (!resp.isError) {
-							$scope.sendTxStatus = $sce.trustAsHtml(globalFuncs.getSuccessText(globalFuncs.successMsgs[2] + "<br />" + resp.data + "<br /><a href='http://etherhub.io/tx/" + resp.data + "' target='_blank'> ETC TX via EtherHub.io </a>"));
+							$scope.sendTxStatus = $sce.trustAsHtml(globalFuncs.getSuccessText(globalFuncs.successMsgs[2] + "<br />" + resp.data + "<br /><a href='http://blocks.link-blockchain.org/tx/" + resp.data + "' target='_blank'> ETC TX via EtherHub.io </a>"));
 							$scope.setBalance();
 						} else {
 							$scope.sendTxStatus = $sce.trustAsHtml(globalFuncs.getDangerText(resp.error));
@@ -958,7 +958,7 @@ var sendTxCtrl = function($scope, $sce, walletService) {
         $scope.sendTxModal.close();
         uiFuncs.sendTx($scope.signedTx, function (resp) {
             if (!resp.isError) {
-                var bExStr = "<a href='http://etherhub.io/tx/" + resp.data + "' target='_blank'> View your transaction </a>";
+                var bExStr = "<a href='http://blocks.link-blockchain.org/tx/" + resp.data + "' target='_blank'> View your transaction </a>";
                 $scope.notifier.success(globalFuncs.successMsgs[2] + resp.data + "<br />" + bExStr);
                 $scope.wallet.setBalance();
             } else {
@@ -1001,12 +1001,12 @@ var tabsCtrl = function($scope, globalService, $sce) {
         	$scope.activeTab = globalService.currentTab;
     }
     $scope.nodeList = {
-	    'etherhub': {
-	        'name': '',
-	        'blockExplorerTX': 'http://etherhub.io/tx/[[txHash]]',
-	        'blockExplorerAddr': 'http://etherhub.io/addr/[[address]]',
-	        'service': '',
-	        'SERVERURL': "https://mewapi.epool.io"
+	    'Default': {
+	        'name': 'Default',
+	        'blockExplorerTX': 'http://blocks.link-blockchain.org/tx/[[txHash]]',
+	        'blockExplorerAddr': 'http://blocks.link-blockchain.org/[[address]]',
+	        'service': 'rpc.link-blockchain.org',
+	        'SERVERURL': 'https://rpc.link-blockchain.org:8647'
 	    }//,
 	   // 'gastracker': {
 	    //    'name': 'Gastracker',
@@ -1023,7 +1023,7 @@ var tabsCtrl = function($scope, globalService, $sce) {
 	   //     'SERVERURL': 'https://mewapi.epool.io'
 	  //  }
 	}
-    $scope.defaultNodeKey = 'etherhub';
+    $scope.defaultNodeKey = 'Default';
     $scope.nodeIsConnected = false;
     $scope.changeNode = function(key) {
         if ($scope.nodeList[key]) {
@@ -1177,8 +1177,8 @@ var contractsCtrl = function contractsCtrl($scope, $sce, walletService) {
         $scope.sendContractModal.close();
         uiFuncs.sendTx($scope.signedTx, function (resp) {
             if (!resp.isError) {
-                var bExStr = "<a href='http://etherhub.io/tx/" + resp.data + "' target='_blank'> View your transaction </a>";
-                var contractAddr = " & Contract Address <a href='http://etherhub.io/addr/" + $scope.tx.contractAddr + "' target='_blank'>" + $scope.tx.contractAddr + "</a>";
+                var bExStr = "<a href='http://blocks.link-blockchain.org/tx/" + resp.data + "' target='_blank'> View your transaction </a>";
+                var contractAddr = " & Contract Address <a href='http://blocks.link-blockchain.org/addr/" + $scope.tx.contractAddr + "' target='_blank'>" + $scope.tx.contractAddr + "</a>";
                 $scope.notifier.success(globalFuncs.successMsgs[2] + "<br />" + resp.data + "<br />" + bExStr + contractAddr);
             } else {
                 $scope.notifier.danger(resp.error);
@@ -2514,9 +2514,9 @@ var globalService = function($http, $httpParamSerializerJQLike) {
     },
     sendTransaction: {
       id: 5,
-      name: "Send ETC & Tokens",
+      name: "Send Link",
       url: "send-transaction",
-      mew: false,
+      mew: true,
       cx: false
     },
     offlineTransaction: {
@@ -69224,37 +69224,9 @@ var balanceDrtv = function balanceDrtv() {
                       <ul class=\"account-info\">\n\
                         <li><span class=\"mono wrap\">{{wallet.balance}}</span> {{ajaxReq.type}}</li>\n\
                       </ul>\n\
-                      <section class=\"token-balances\">\n\
-                        <h5 translate=\"sidebar_TokenBal\">Token Balances:</h5>\n\
-                        <table class=\"account-info\">\n\
-                          <tr ng-repeat=\"token in wallet.tokenObjs track by $index\" ng-show=\"token.balance!=0 \&\& token.balance!=\'loading\' || token.type!==\'default\' || tokenVisibility==\'shown\'\">\n\
-                            <td class=\"mono wrap\"><img src=\"images/icon-remove.svg\" class=\"token-remove\" title=\"Remove Token\" ng-click=\"removeTokenFromLocal(token.symbol)\" ng-show=\"token.type!==\'default\'\" />{{token.getBalance()}}</td>\n\
-                            <td>{{token.getSymbol()}} </td>\n\
-                          </tr>\n\
-                        </table>\n\
-                        <a class=\"btn btn-default btn-sm\" ng-click=\"tokenVisibility=\'shown\'\" ng-show=\"tokenVisibility==\'hidden\'\">Show All Tokens</a>\n\
-                        <a class=\"btn btn-default btn-sm\" ng-click=\"tokenVisibility=\'hidden\'\" ng-show=\"tokenVisibility==\'shown\'\">Hide Tokens</a>\n\
-                        <a class=\"btn btn-default btn-sm\" ng-click=\"customTokenField=!customTokenField\"><span translate=\"SEND_custom\"translate=\"SEND_custom\">Add Custom Token<\/span><\/a>\n \
-                        <div class=\"custom-token-fields\" ng-show=\"customTokenField\">\n\
-                          <label translate=\"TOKEN_Addr\">Address:</label>\n\
-                          <input class=\"form-control input-sm\" type=\"text\" ng-model=\"localToken.contractAdd\" ng-class=\"Validator.isValidAddress(localToken.contractAdd) ? \'is-valid\' : \'is-invalid\'\" />\n\
-                          <label translate=\"TOKEN_Symbol\">Token Symbol:</label>\n\
-                          <input class=\"form-control input-sm\" type=\"text\" ng-model=\"localToken.symbol\" ng-class=\"localToken.symbol!=\'\' ? \'is-valid\' : \'is-invalid\'\" />\n\
-                          <label translate=\"TOKEN_Dec\"> Decimals:</label>\n\
-                          <input class=\"form-control input-sm\" type=\"text\" ng-model=\"localToken.decimals\" ng-class=\"Validator.isPositiveNumber(localToken.decimals) ? \'is-valid\' : \'is-invalid\'\" />\n\
-                          <div class=\"btn btn-primary btn-sm\" ng-click=\"saveTokenToLocal()\" translate=\"x_Save\">Save</div>\n\
-                          <div ng-bind-html=\"validateLocalToken\"></div>\n\
-                        </div>\n\
-                      </section>\n\
+                      \n\
                       <hr />\n\
-                      <section ng-show=\"ajaxReq.type==\'ETC\'\">\n\
-                        <h5 translate=\"sidebar_Equiv\">Equivalent Values:</h5>\n\
-                        <ul class=\"account-info\">\n\
-                          <li><span class=\"mono wrap\">{{wallet.btcBalance}}</span> BTC</li>\n\
-                          <li><span class=\"mono wrap\">{{wallet.eurBalance}}</span> EUR</li>\n\
-                          <li><span class=\"mono wrap\">{{wallet.usdBalance}}</span> USD</li>\n\
-                        </ul>\n\
-                      </section>\n\
+                      \n\
                     </aside>'
   };
 };
