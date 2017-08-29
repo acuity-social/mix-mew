@@ -5,8 +5,8 @@ var ajaxReq = function() {}
 ajaxReq.http = null;
 ajaxReq.postSerializer = null;
 ajaxReq.COINMARKETCAPAPI = "https://coinmarketcap-nexuist.rhcloud.com/api/";
-ajaxReq.chainId = 61;
-ajaxReq.type = "ETC";
+ajaxReq.chainId = 76;
+ajaxReq.type = "LINK";
 ajaxReq.pendingPosts = [];
 ajaxReq.config = {
 	headers: {
