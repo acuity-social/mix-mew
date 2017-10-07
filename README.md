@@ -1,2 +1,2 @@
-# LinkWallet
-MyLinkWallet
+# MIX Wallet
+MyMIXWallet
